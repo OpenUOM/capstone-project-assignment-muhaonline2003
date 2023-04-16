@@ -110,7 +110,7 @@ app.post("/addStudent", async function (req, res) {
   res.end(JSON.stringify(data));
 });
 
-app.delete("/deleteStudent", async function (req, res) {
+app.post("/deleteStudent", async function (req, res) {
   let reqBody = req.body;
   console.log(
     "Request received to delete student. Req body: " + JSON.stringify(reqBody)
@@ -121,7 +121,7 @@ app.delete("/deleteStudent", async function (req, res) {
   res.end(JSON.stringify(data));
 });
 
-app.put("/editStudent", async function (req, res) {
+app.post("/editStudent", async function (req, res) {
   let reqBody = req.body;
   console.log(
     "Request received to update Student. Req body: " + JSON.stringify(reqBody)
