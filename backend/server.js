@@ -11,7 +11,7 @@ const {
   readTeacherInfo,
   updateStudent,
   updateTeacher,
-  dbinitialize,
+  dbinitialize
 } = require ("./database.js");
 
 const app = express();
@@ -99,7 +99,10 @@ app.post("/addStudent", async function (req, res) {
   console.log(
   "Request received to add student. Req body: " + JSON.stringify(reqBody)
   );
-  let data = await addStudent(reqBody.id, reqBody.name, reqBody.age, reqBody.hometown);
+  if (!reqBody || !reqBody.id || !reqBody.name || !reqBody.age || !reqBody.hometown) {
+    return res.status(400).send("Request body must contain data for a single student.");
+  }
+  let data = await addStudent(reqBody.age, reqBody.hometown, reqBody.id, reqBody.name);
 
   res.setHeader("Content-Type", "application/json");
   res.end(JSON.stringify(data));
