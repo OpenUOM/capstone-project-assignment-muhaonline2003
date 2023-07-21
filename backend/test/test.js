@@ -9,12 +9,15 @@ beforeAll(async () => {
   await testBase.resetDatabase(db);
 });
 
+
 /**
  * Reset the database after every test case
  */
+
 afterEach(async () => {
   await testBase.resetDatabase(db);
 });
+
 
 describe("Teacher Endpoints", () => {
   it("GET /listTeachers should show all teachers", async () => {
@@ -143,8 +146,6 @@ describe("Student Endpoints", () => {
 
     expect(body.length).toBe(4)
 
-    const addedStudent = body.find(student => student.id === 99999);
-
     expect(body).toContainEqual({
       "id": 99999,
       "name": "Rashini Shehara",
@@ -155,7 +156,7 @@ describe("Student Endpoints", () => {
 
   it("POST /editStudent should edit a Student", async () => {
     // add new teacher
-    const editRes = await requestWithSupertest.post("/editStudent").send({
+    await requestWithSupertest.post("/editStudent").send({
       "id": 20002,
       "name": "Sandakan",
       "age": 15,

@@ -1,7 +1,7 @@
 const dbConnection = require("./sqlite");
 
 dbConnection
-  .getDbConnection() 
+  .getDbConnection()
   .then((db) => {
     init(db);
   })
@@ -29,20 +29,6 @@ const readTeachers = async () => {
             .raw(sql)
             .then((teachers) => {
                 resolve(teachers);
-            })
-            .catch((error) => {
-                reject(error);
-            });
-    });
-}
-
-const readTeacherInfo = async (id) => {
-    const sql = `SELECT * FROM teacher WHERE id = ?`
-    return new Promise((resolve, reject) => {
-        knex_db
-            .raw(sql, [id])
-            .then((teacher) => {
-                resolve(teacher);
             })
             .catch((error) => {
                 reject(error);
@@ -92,6 +78,20 @@ const deleteTeacher = async (id) => {
     });
 }
 
+const readTeacherInfo = async (id) => {
+    const sql = `SELECT * FROM teacher WHERE id = ?`
+    return new Promise((resolve, reject) => {
+        knex_db
+            .raw(sql, [id])
+            .then((data) => {
+                resolve(data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+}
+
 const readStudents = async () => {
     const sql = `SELECT * FROM student`
     return new Promise((resolve, reject) => {
@@ -106,27 +106,13 @@ const readStudents = async () => {
     });
 }
 
-const readStudentInfo = async (id) => {
-    const sql = `SELECT * FROM student WHERE id = ?`
+const addStudent = async (id, name, age, hometown) => {
+    const sql = `INSERT INTO student(id, name, age, hometown) values (?, ?, ?, ?)`
     return new Promise((resolve, reject) => {
         knex_db
-            .raw(sql, [id])
-            .then((student) => {
-                resolve(student);
-            })
-            .catch((error) => {
-                reject(error);
-            });
-    });
-}
-
-const addStudent = async (age, hometown, id, name) => {
-    const sql = `INSERT INTO student(age,hometown,id,name) values (?, ?, ?, ?)`
-    return new Promise((resolve, reject) => {
-        knex_db
-            .raw(sql, [age, hometown, id, name])
+            .raw(sql, [id, name, age, hometown])
             .then(() => {
-                resolve({status: "Successfully inserted student"});
+                resolve({status: "Successfully inserted Student"})
             })
             .catch((error) => {
                 reject(error);
@@ -134,19 +120,19 @@ const addStudent = async (age, hometown, id, name) => {
     });
 }
 
-const updateStudent = async (age, hometown, id, name) => {
+const updateStudent = async (name, age, hometown, id) => {
     const sql = `UPDATE student SET name=?, age=?, hometown=? WHERE id=?`
     return new Promise((resolve, reject) => {
         knex_db
-            .raw(sql, [age, hometown, id, name])
+            .raw(sql, [name, age, hometown, id])
             .then(() => {
-                resolve({status: "Successfully updated student"});
+                resolve({status: "Successfully updated Student"})
             })
             .catch((error) => {
                 reject(error);
             });
     });
-} 
+}
 
 const deleteStudent = async (id) => {
     const sql = `DELETE FROM student WHERE id = ?`
@@ -154,7 +140,21 @@ const deleteStudent = async (id) => {
         knex_db
             .raw(sql, [id])
             .then(() => {
-                resolve({status: "Successfully deleted student"});
+                resolve({status: "Successfully deleted Student"})
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+}
+
+const readStudentInfo = async (id) => {
+    const sql = `SELECT * FROM student WHERE id = ?`
+    return new Promise((resolve, reject) => {
+        knex_db
+            .raw(sql, [id])
+            .then((data) => {
+                resolve(data);
             })
             .catch((error) => {
                 reject(error);
@@ -172,5 +172,5 @@ module.exports = {
     readStudentInfo,
     readTeacherInfo,
     updateStudent,
-    updateTeacher
+    updateTeacher,
 };
